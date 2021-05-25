@@ -1,12 +1,14 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Form, Button, Col } from "react-bootstrap";
+// Card type and its digit length
 const CARD_TYPE_LENGTH = {
-  Visa: 1,
+  Visa: 10,
   JCB: 16,
   Amex: 20,
   MasterCard: 21,
 };
+// Cards Element render
 function CardType({ setCardType: parentSetCardType }) {
   const [cardType, setCardType] = useState([]);
 
@@ -14,6 +16,7 @@ function CardType({ setCardType: parentSetCardType }) {
     parentSetCardType(value);
   }
   useEffect(() => {
+    // on mount calling api and fetching card types.
     axios
       .get("http://www.mocky.io/v2/5d145fa22f0000ff3ec4f030")
       .then((data) => {
@@ -35,6 +38,7 @@ function CardType({ setCardType: parentSetCardType }) {
 function PaymentSubmitted() {
   const [data, setData] = useState({});
   useEffect(() => {
+    // once payment submitted, get reciept and show result
     axios
       .get("http://www.mocky.io/v2/5d8de422310000b19d2b517a")
       .then((response) => {
@@ -108,24 +112,26 @@ function Payment() {
   }
 
   function checkButtonState() {
+    // check if data is filled for some inputs
     if (cardNumber.length && expireNumber.length && name.length) {
       if (
+        // if data is correct format or not
         !isNaN(Number(cardNumber)) &&
         CARD_TYPE_LENGTH[cardType] === cardNumber.length &&
         name.length > 0 &&
         expireNumber.includes("-")
       ) {
-        if (email.length) {
+        if (email.length) {// if email id given, check for format
           if (email.includes("@") && email.includes(".com")) {
             setSubmitEnable(false);
           } else {
             setSubmitEnable(true);
           }
         } else {
-          setSubmitEnable(false);
+          setSubmitEnable(false); // enable button
         }
       } else {
-        setSubmitEnable(true);
+        setSubmitEnable(true); // disable payment button
       }
     }
   }
@@ -136,12 +142,12 @@ function Payment() {
     <Col md>
       <Form>
         <Form.Group>
-          <Form.Label>Card type</Form.Label>
+          <Form.Label>*Card type</Form.Label>
           <CardType setCardType={setCardType} />
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Card Number</Form.Label>
+          <Form.Label>*Card Number</Form.Label>
           <Form.Control
             type="number"
             placeholder="12345"
@@ -150,7 +156,7 @@ function Payment() {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Expire</Form.Label>
+          <Form.Label>*Expire</Form.Label>
           <Form.Control
             type="month"
             placeholder="12345"
@@ -159,10 +165,10 @@ function Payment() {
         </Form.Group>
 
         <Form.Group>
-          <Form.Label>Name</Form.Label>
+          <Form.Label>*Name</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Guru"
+            placeholder="XYZ"
             maxLength="50"
             onChange={onNameChange}
           />
