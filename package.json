@@ -1,5 +1,6 @@
 {
   "name": "temp-project",
+  "homepage": "https://pratikh.github.io/payment-app-demo/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
